@@ -272,9 +272,6 @@ public class BGASwipeBackLayout extends ViewGroup {
         mSwipeBackThreshold = threshold;
     }
 
-    void setStartSlidingThreshold(int threshold) {
-        mStartSlidingThresholde = threshold;
-    }
 
     /**
      * 设置底部导航条是否悬浮在内容上
@@ -1319,6 +1316,10 @@ public class BGASwipeBackLayout extends ViewGroup {
      */
     public void setShadowResourceRight(int resId) {
         setShadowDrawableRight(ContextCompat.getDrawable(getContext(), resId));
+    }
+
+    public void setStartSlidingThreshold(int threshold) {
+        mStartSlidingThresholde = threshold;
     }
 
     @Override
