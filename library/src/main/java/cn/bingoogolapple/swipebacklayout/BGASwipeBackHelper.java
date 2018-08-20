@@ -203,6 +203,12 @@ public class BGASwipeBackHelper {
         return false;
     }
 
+    public void setStartSlidingThreshold(int threshold) {
+        if (mSwipeBackLayout != null) {
+            mSwipeBackLayout.setStartSlidingThreshold(threshold);
+        }
+    }
+
     /**
      * 执行跳转到下一个 Activity 的动画
      */
