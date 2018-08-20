@@ -20,7 +20,6 @@ package cn.bingoogolapple.swipebacklayout;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -33,7 +32,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.Settings;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.FloatRange;
@@ -54,7 +52,6 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
-import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -67,6 +64,11 @@ import java.util.ArrayList;
  */
 public class BGASwipeBackLayout extends ViewGroup {
     private static final String TAG = "SlidingPaneLayout";
+
+    /*
+     * 移动START_DRAG_THRESHOLD距离后才真正开始拖动
+     */
+    private static final int START_SLIDING_THRESHOLD = 32;
 
     /**
      * Default size of the overhang for a pane in the open state.
@@ -89,7 +91,7 @@ public class BGASwipeBackLayout extends ViewGroup {
     /**
      * Minimum velocity that will be detected as a fling
      */
-    private static final int MIN_FLING_VELOCITY = 400; // dips per second
+    private static final int MIN_FLING_VELOCITY = 300; // dips per second
 
     /**
      * The fade color used for the panel covered by the slider. 0 = no fading.
@@ -155,6 +157,9 @@ public class BGASwipeBackLayout extends ViewGroup {
     private float mInitialMotionY;
 
     private PanelSlideListener mPanelSlideListener;
+
+    private int mDistanceBeforeSliding = 0;
+    private int mStartSlidingThresholde = START_SLIDING_THRESHOLD;
 
     final ViewDragHelper mDragHelper;
 
@@ -265,6 +270,10 @@ public class BGASwipeBackLayout extends ViewGroup {
      */
     void setSwipeBackThreshold(@FloatRange(from = 0.0f, to = 1.0f) float threshold) {
         mSwipeBackThreshold = threshold;
+    }
+
+    void setStartSlidingThreshold(int threshold) {
+        mStartSlidingThresholde = threshold;
     }
 
     /**
@@ -1513,6 +1522,9 @@ public class BGASwipeBackLayout extends ViewGroup {
             // ======================== 新加的 END ========================
             // Make all child views visible in preparation for sliding things around
             setAllChildrenVisible();
+
+            Log.d("MYDEMO", "reset mDistanceBeforeSliding");
+            mDistanceBeforeSliding = 0;
         }
 
         @Override
@@ -1550,6 +1562,14 @@ public class BGASwipeBackLayout extends ViewGroup {
 
         @Override
         public int clampViewPositionHorizontal(View child, int left, int dx) {
+
+            if (mDistanceBeforeSliding < START_DRAG_THRESHOLD && dx > 0) {
+                mDistanceBeforeSliding += dx;
+
+                return 0;
+            }
+
+
             final LayoutParams lp = (LayoutParams) mSlideableView.getLayoutParams();
 
             final int newLeft;
