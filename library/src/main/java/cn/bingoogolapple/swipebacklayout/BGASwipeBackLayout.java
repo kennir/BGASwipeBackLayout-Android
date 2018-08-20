@@ -1564,7 +1564,7 @@ public class BGASwipeBackLayout extends ViewGroup {
         @Override
         public int clampViewPositionHorizontal(View child, int left, int dx) {
 
-            if (mDistanceBeforeSliding < START_DRAG_THRESHOLD && dx > 0) {
+            if (mDistanceBeforeSliding < START_SLIDING_THRESHOLD && dx > 0) {
                 mDistanceBeforeSliding += dx;
 
                 return 0;
