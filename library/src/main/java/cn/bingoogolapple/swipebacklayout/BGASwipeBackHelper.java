@@ -248,7 +248,8 @@ public class BGASwipeBackHelper {
      * 执行滑动返回到到上一个 Activity 的动画。这里弄成静态方法，方便在 Fragment 中调用
      */
     public static void executeSwipeBackAnim(Activity activity) {
-        activity.overridePendingTransition(R.anim.bga_sbl_activity_swipeback_enter, R.anim.bga_sbl_activity_swipeback_exit);
+//        activity.overridePendingTransition(R.anim.bga_sbl_activity_swipeback_enter, R.anim.bga_sbl_activity_swipeback_exit);
+        activity.overridePendingTransition(0, 0);
     }
 
     /**
