@@ -19,6 +19,7 @@ package cn.bingoogolapple.swipebacklayout;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.FloatRange;
 import android.view.View;
@@ -248,8 +249,11 @@ public class BGASwipeBackHelper {
      * 执行滑动返回到到上一个 Activity 的动画。这里弄成静态方法，方便在 Fragment 中调用
      */
     public static void executeSwipeBackAnim(Activity activity) {
-//        activity.overridePendingTransition(R.anim.bga_sbl_activity_swipeback_enter, R.anim.bga_sbl_activity_swipeback_exit);
-        activity.overridePendingTransition(0, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            activity.overridePendingTransition(0, 0);
+        } else {
+            activity.overridePendingTransition(R.anim.bga_sbl_activity_swipeback_enter, R.anim.bga_sbl_activity_swipeback_exit);
+        }
     }
 
     /**
