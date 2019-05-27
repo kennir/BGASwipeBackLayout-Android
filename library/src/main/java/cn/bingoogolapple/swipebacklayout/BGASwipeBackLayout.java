@@ -1165,7 +1165,7 @@ public class BGASwipeBackLayout extends ViewGroup {
         boolean result;
 
         final int save;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT >= 28) {
             save = canvas.saveLayer(0, 0, getWidth(), getHeight(), null);
         } else {
             save = canvas.save();
